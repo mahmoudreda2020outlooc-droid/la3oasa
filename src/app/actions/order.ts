@@ -65,6 +65,7 @@ export async function pingAction() {
         message: 'pong',
         timestamp: new Date().toISOString(),
         envCheck: {
+            hasApiKey: !!process.env.APPWRITE_API_KEY,
             hasProject: !!process.env.NEXT_PUBLIC_APPWRITE_PROJECT,
             hasDb: !!process.env.APPWRITE_DATABASE_ID || !!process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID,
         }
