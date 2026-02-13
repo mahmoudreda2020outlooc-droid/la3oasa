@@ -278,6 +278,13 @@ const FloatingCart = () => {
                                 >
                                     {isSubmitting ? 'جاري الإرسال... 🚀' : (!customerName || !customerPhone || !depositFile) ? 'أكمل البيانات أولاً 📝' : 'إرسال الطلب للمطعم 🚀'}
                                 </button>
+
+                                <button
+                                    onClick={testPing}
+                                    style={{ opacity: 0.1, fontSize: '10px', marginTop: '10px', background: 'none', border: 'none', color: 'white', cursor: 'pointer' }}
+                                >
+                                    ⚙️ Diagnostics
+                                </button>
                             </div>
                         </>
                     )}
