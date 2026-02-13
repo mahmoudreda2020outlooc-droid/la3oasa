@@ -61,6 +61,17 @@ export default function AdminPage() {
 
     useEffect(() => {
         const verifyAuth = async () => {
+            // STRICT: check if sessionStorage flag exists
+            // This flag is deleted by the browser ONLY when the tab/window is closed
+            const sessionActive = sessionStorage.getItem('admin_session_active');
+
+            if (!sessionActive) {
+                // If window was closed, force logout on server too
+                await adminLogoutAction();
+                setIsAuthenticated(false);
+                return;
+            }
+
             const result = await checkAdminAuthAction();
             if (result.authenticated) {
                 setIsAuthenticated(true);
@@ -73,6 +84,8 @@ export default function AdminPage() {
         e.preventDefault();
         const result = await adminLoginAction(password);
         if (result.success) {
+            // Set session flag
+            sessionStorage.setItem('admin_session_active', 'true');
             setIsAuthenticated(true);
             setLoginError('');
         } else {
@@ -150,6 +163,7 @@ export default function AdminPage() {
     }, [isAuthenticated]);
 
     const handleLogout = async () => {
+        sessionStorage.removeItem('admin_session_active');
         await adminLogoutAction();
         setIsAuthenticated(false);
     };
