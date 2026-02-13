@@ -66,11 +66,9 @@ export async function pingAction() {
         timestamp: new Date().toISOString(),
         envCheck: {
             hasApiKey: !!process.env.APPWRITE_API_KEY,
-            hasApiKey_SpacePrefix: !!process.env[' APPWRITE_API_KEY'],
-            hasApiKey_SpaceSuffix: !!process.env['APPWRITE_API_KEY '],
-            hasApiKey_Public: !!process.env.NEXT_PUBLIC_APPWRITE_API_KEY,
             hasProject: !!process.env.NEXT_PUBLIC_APPWRITE_PROJECT,
             hasDb: !!process.env.APPWRITE_DATABASE_ID || !!process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID,
+            allKeys: Object.keys(process.env).filter(key => !key.startsWith('__')) // List names and filter internals
         }
     };
 }

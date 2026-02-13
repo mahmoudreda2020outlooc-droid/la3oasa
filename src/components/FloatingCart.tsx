@@ -122,15 +122,16 @@ const FloatingCart = () => {
         try {
             const res = await pingAction();
             const info = res.envCheck;
+            const appwriteKeys = info.allKeys.filter((k: string) => k.toLowerCase().includes('appwrite'));
             alert(`Diagnostic Results:
 - Project: ${info.hasProject ? '✅' : '❌'}
 - Database: ${info.hasDb ? '✅' : '❌'}
 - API Key (Standard): ${info.hasApiKey ? '✅' : '❌'}
-- API Key (With Prefix Space): ${info.hasApiKey_SpacePrefix ? '⚠️ YES' : 'NO'}
-- API Key (With Suffix Space): ${info.hasApiKey_SpaceSuffix ? '⚠️ YES' : 'NO'}
-- API Key (NEXT_PUBLIC_): ${info.hasApiKey_Public ? '❌ WRONG NAME' : 'NO'}
 
-💡 Tip: If all API keys are ❌, ensure you hit "Save" and then "Redeploy" in Vercel.`);
+Available Appwrite keys on server:
+${appwriteKeys.length > 0 ? appwriteKeys.join('\n') : 'NONE FOUND'}
+
+💡 Tip: The name MUST be exactly "APPWRITE_API_KEY" (All Caps).`);
         } catch (err: any) {
             alert(`Ping Failed: ${err.message}`);
         }
