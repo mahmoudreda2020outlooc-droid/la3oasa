@@ -97,12 +97,14 @@ export async function submitOrderAction(formData: FormData) {
         fileFormData.append('fileId', 'unique()');
         fileFormData.append('file', depositFile);
 
+        const uploadHeaders: Record<string, string> = {
+            'x-appwrite-project': project,
+        };
+        if (apiKey) uploadHeaders['x-appwrite-key'] = apiKey;
+
         const uploadResponse = await fetch(`${endpoint}/storage/buckets/${bucketId}/files`, {
             method: 'POST',
-            headers: {
-                'x-appwrite-project': project,
-                'x-appwrite-key': apiKey,
-            },
+            headers: uploadHeaders,
             body: fileFormData
         });
 
@@ -115,13 +117,15 @@ export async function submitOrderAction(formData: FormData) {
         depositImageId = uploadData.$id;
 
         // Create document using pure fetch
+        const docHeaders: Record<string, string> = {
+            'Content-Type': 'application/json',
+            'x-appwrite-project': project,
+        };
+        if (apiKey) docHeaders['x-appwrite-key'] = apiKey;
+
         const documentResponse = await fetch(`${endpoint}/databases/${databaseId}/collections/${collectionId}/documents`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'x-appwrite-project': project,
-                'x-appwrite-key': apiKey,
-            },
+            headers: docHeaders,
             body: JSON.stringify({
                 documentId: 'unique()',
                 data: {
@@ -179,13 +183,15 @@ export async function trackOrderAction(searchId: string) {
             values: [normalizedId]
         }));
 
+        const listHeaders: Record<string, string> = {
+            'Content-Type': 'application/json',
+            'x-appwrite-project': project,
+        };
+        if (apiKey) listHeaders['x-appwrite-key'] = apiKey;
+
         const listResponse = await fetch(listUrl.toString(), {
             method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'x-appwrite-project': project,
-                'x-appwrite-key': apiKey,
-            }
+            headers: listHeaders
         });
 
         if (listResponse.ok) {
