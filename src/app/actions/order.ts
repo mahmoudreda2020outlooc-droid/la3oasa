@@ -68,7 +68,6 @@ export async function pingAction() {
             hasApiKey: !!process.env.APPWRITE_API_KEY,
             hasProject: !!process.env.NEXT_PUBLIC_APPWRITE_PROJECT,
             hasDb: !!process.env.APPWRITE_DATABASE_ID || !!process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID,
-            allKeys: Object.keys(process.env).filter(key => !key.startsWith('__')) // List names and filter internals
         }
     };
 }

@@ -118,24 +118,6 @@ const FloatingCart = () => {
         }
     };
 
-    const testPing = async () => {
-        try {
-            const res = await pingAction();
-            const info = res.envCheck;
-            const appwriteKeys = info.allKeys.filter((k: string) => k.toLowerCase().includes('appwrite'));
-            alert(`Diagnostic Results:
-- Project: ${info.hasProject ? '✅' : '❌'}
-- Database: ${info.hasDb ? '✅' : '❌'}
-- API Key (Standard): ${info.hasApiKey ? '✅' : '❌'}
-
-Available Appwrite keys on server:
-${appwriteKeys.length > 0 ? appwriteKeys.join('\n') : 'NONE FOUND'}
-
-💡 Tip: The name MUST be exactly "APPWRITE_API_KEY" (All Caps).`);
-        } catch (err: any) {
-            alert(`Ping Failed: ${err.message}`);
-        }
-    };
 
     const closeSuccess = () => {
         setShowSuccess(false);
@@ -289,12 +271,6 @@ ${appwriteKeys.length > 0 ? appwriteKeys.join('\n') : 'NONE FOUND'}
                                     {isSubmitting ? 'جاري الإرسال... 🚀' : (!customerName || !customerPhone || !depositFile) ? 'أكمل البيانات أولاً 📝' : 'إرسال الطلب للمطعم 🚀'}
                                 </button>
 
-                                <button
-                                    onClick={testPing}
-                                    style={{ opacity: 0.1, fontSize: '10px', marginTop: '10px', background: 'none', border: 'none', color: 'white', cursor: 'pointer' }}
-                                >
-                                    ⚙️ Diagnostics
-                                </button>
                             </div>
                         </>
                     )}
