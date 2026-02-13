@@ -121,7 +121,16 @@ const FloatingCart = () => {
     const testPing = async () => {
         try {
             const res = await pingAction();
-            alert(`Ping Result: ${res.message}\nAPI Key: ${res.envCheck.hasApiKey ? '✅' : '❌'}\nProject: ${res.envCheck.hasProject ? '✅' : '❌'}\nDB: ${res.envCheck.hasDb ? '✅' : '❌'}`);
+            const info = res.envCheck;
+            alert(`Diagnostic Results:
+- Project: ${info.hasProject ? '✅' : '❌'}
+- Database: ${info.hasDb ? '✅' : '❌'}
+- API Key (Standard): ${info.hasApiKey ? '✅' : '❌'}
+- API Key (With Prefix Space): ${info.hasApiKey_SpacePrefix ? '⚠️ YES' : 'NO'}
+- API Key (With Suffix Space): ${info.hasApiKey_SpaceSuffix ? '⚠️ YES' : 'NO'}
+- API Key (NEXT_PUBLIC_): ${info.hasApiKey_Public ? '❌ WRONG NAME' : 'NO'}
+
+💡 Tip: If all API keys are ❌, ensure you hit "Save" and then "Redeploy" in Vercel.`);
         } catch (err: any) {
             alert(`Ping Failed: ${err.message}`);
         }
