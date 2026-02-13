@@ -48,7 +48,7 @@ export default function Home() {
         <div className="feature-card highlight">
           <div className="icon">🍔</div>
           <h3>لغوصة للركب</h3>
-          <p>صوصات وجبنة سايحة هتغرقك سعادة.</p>
+          <p>صوصات وجبنة سايحة هتغرقك سعادة..</p>
         </div>
         <div className="feature-card">
           <div className="icon">🥪</div>
