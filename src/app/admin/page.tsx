@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import { APPWRITE_CONFIG, databases, getFilePreview } from '@/lib/appwrite';
 import { Query } from 'appwrite';
 import client from '@/lib/appwrite';
-import client from '@/lib/appwrite';
 import { getOrdersAction, updateOrderStatusAction, deleteOrderAction, getImagePreviewAction, adminLoginAction, adminLogoutAction, checkAdminAuthAction } from '@/app/actions/order';
 
 type Order = {

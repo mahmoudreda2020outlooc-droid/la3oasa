@@ -197,13 +197,15 @@ export async function trackOrderAction(searchId: string) {
 
         // 2. If not found, try by Document ID (Direct Fetch)
         if (!foundDocument) {
+            const headers: Record<string, string> = {
+                'Content-Type': 'application/json',
+                'x-appwrite-project': project,
+            };
+            if (apiKey) headers['x-appwrite-key'] = apiKey;
+
             const docResponse = await fetch(`${endpoint}/databases/${databaseId}/collections/${collectionId}/documents/${normalizedId}`, {
                 method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'x-appwrite-project': project,
-                    'x-appwrite-key': apiKey,
-                }
+                headers
             });
 
             if (docResponse.ok) {
@@ -266,16 +268,22 @@ export async function getOrdersAction() {
         archivedUrl.searchParams.append('queries[]', JSON.stringify({ method: 'orderDesc', attribute: 'date' }));
         archivedUrl.searchParams.append('queries[]', JSON.stringify({ method: 'limit', values: [100] }));
 
+        const headers: Record<string, string> = {
+            'Content-Type': 'application/json',
+            'x-appwrite-project': project,
+        };
+        if (apiKey) headers['x-appwrite-key'] = apiKey;
+
         // 3. Fetch in Parallel
         const [activeResponse, archivedResponse] = await Promise.all([
             fetch(activeUrl.toString(), {
                 method: 'GET',
-                headers: { 'Content-Type': 'application/json', 'x-appwrite-project': project, 'x-appwrite-key': apiKey },
+                headers,
                 cache: 'no-store'
             }),
             fetch(archivedUrl.toString(), {
                 method: 'GET',
-                headers: { 'Content-Type': 'application/json', 'x-appwrite-project': project, 'x-appwrite-key': apiKey },
+                headers,
                 cache: 'no-store'
             })
         ]);
