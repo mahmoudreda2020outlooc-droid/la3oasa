@@ -4,7 +4,8 @@ import { useEffect, useState } from 'react';
 import { APPWRITE_CONFIG, databases, getFilePreview } from '@/lib/appwrite';
 import { Query } from 'appwrite';
 import client from '@/lib/appwrite';
-import { getOrdersAction, updateOrderStatusAction, deleteOrderAction, getImagePreviewAction, adminLoginAction, adminLogoutAction } from '@/app/actions/order';
+import client from '@/lib/appwrite';
+import { getOrdersAction, updateOrderStatusAction, deleteOrderAction, getImagePreviewAction, adminLoginAction, adminLogoutAction, checkAdminAuthAction } from '@/app/actions/order';
 
 type Order = {
     $id: string;
@@ -60,10 +61,13 @@ export default function AdminPage() {
     const [loginError, setLoginError] = useState('');
 
     useEffect(() => {
-        const isAuth = sessionStorage.getItem('la3osa_admin_auth');
-        if (isAuth === 'true') {
-            setIsAuthenticated(true);
-        }
+        const verifyAuth = async () => {
+            const result = await checkAdminAuthAction();
+            if (result.authenticated) {
+                setIsAuthenticated(true);
+            }
+        };
+        verifyAuth();
     }, []);
 
     const handleLogin = async (e: React.FormEvent) => {

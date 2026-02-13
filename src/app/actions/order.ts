@@ -51,6 +51,13 @@ export async function adminLogoutAction() {
     return { success: true };
 }
 
+/**
+ * SECURE: Check if the user is currently authenticated (for UI hydration).
+ */
+export async function checkAdminAuthAction() {
+    return { authenticated: await checkAdminAuth() };
+}
+
 export async function pingAction() {
     // Only reveal non-sensitive info
     return {
