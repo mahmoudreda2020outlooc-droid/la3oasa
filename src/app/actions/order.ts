@@ -26,7 +26,6 @@ export async function adminLoginAction(password: string) {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'strict',
-            maxAge: 60 * 60 * 24, // 24 hours
             path: '/',
         });
         return { success: true };
