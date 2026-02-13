@@ -25,7 +25,15 @@ const nextConfig: NextConfig = {
           },
           {
             key: 'Content-Security-Policy',
-            value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob: https://cloud.appwrite.io https://images.unsplash.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://cloud.appwrite.io; object-src 'none';",
+            value: "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob: https://cloud.appwrite.io https://images.unsplash.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://cloud.appwrite.io; object-src 'none';",
+          },
+          {
+            key: 'Permissions-Policy',
+            value: 'camera=(), microphone=(), geolocation=(), interest-cohort=()',
+          },
+          {
+            key: 'X-XSS-Protection',
+            value: '1; mode=block',
           },
           {
             key: 'Strict-Transport-Security',
