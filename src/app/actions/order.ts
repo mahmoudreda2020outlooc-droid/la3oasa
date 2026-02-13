@@ -12,7 +12,14 @@ const ADMIN_SESSION_NAME = 'la3osa_admin_session';
  */
 export async function adminLoginAction(password: string) {
     const correctPassword = process.env.ADMIN_PASSWORD || process.env.NEXT_PUBLIC_ADMIN_PASSWORD || 'admin123';
-    
+
+    // Debug logging (will show in Vercel logs)
+    console.log('Login Attempt - Env check:', {
+        has_ADMIN_PASSWORD: !!process.env.ADMIN_PASSWORD,
+        has_NEXT_PUBLIC: !!process.env.NEXT_PUBLIC_ADMIN_PASSWORD,
+        using_default: !process.env.ADMIN_PASSWORD && !process.env.NEXT_PUBLIC_ADMIN_PASSWORD
+    });
+
     if (password === correctPassword) {
         const cookieStore = await cookies();
         cookieStore.set(ADMIN_SESSION_NAME, 'authenticated', {
@@ -301,13 +308,15 @@ export async function updateOrderStatusAction(orderId: string, newStatus: string
         const collectionId = process.env.APPWRITE_COLLECTION_ID || process.env.NEXT_PUBLIC_APPWRITE_COLLECTION_ID || '';
         const apiKey = process.env.APPWRITE_API_KEY;
 
+        const headers: Record<string, string> = {
+            'Content-Type': 'application/json',
+            'x-appwrite-project': project,
+        };
+        if (apiKey) headers['x-appwrite-key'] = apiKey;
+
         const response = await fetch(`${endpoint}/databases/${databaseId}/collections/${collectionId}/documents/${orderId}`, {
             method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json',
-                'x-appwrite-project': project,
-                'x-appwrite-key': apiKey,
-            },
+            headers,
             body: JSON.stringify({
                 data: { status: newStatus }
             })
@@ -332,13 +341,15 @@ export async function deleteOrderAction(orderId: string) {
         const collectionId = process.env.APPWRITE_COLLECTION_ID || process.env.NEXT_PUBLIC_APPWRITE_COLLECTION_ID || '';
         const apiKey = process.env.APPWRITE_API_KEY;
 
+        const headers: Record<string, string> = {
+            'Content-Type': 'application/json',
+            'x-appwrite-project': project,
+        };
+        if (apiKey) headers['x-appwrite-key'] = apiKey;
+
         const response = await fetch(`${endpoint}/databases/${databaseId}/collections/${collectionId}/documents/${orderId}`, {
             method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                'x-appwrite-project': project,
-                'x-appwrite-key': apiKey,
-            },
+            headers,
         });
 
         if (!response.ok) throw new Error('فشل حذف الطلب');
@@ -360,11 +371,13 @@ export async function getImagePreviewAction(fileId: string) {
 
         const url = `${endpoint}/storage/buckets/${bucketId}/files/${fileId}/view?project=${project}`;
 
+        const headers: Record<string, string> = {
+            'x-appwrite-project': project,
+        };
+        if (apiKey) headers['x-appwrite-key'] = apiKey;
+
         const response = await fetch(url, {
-            headers: {
-                'x-appwrite-project': project,
-                'x-appwrite-key': apiKey,
-            }
+            headers
         });
 
         if (!response.ok) throw new Error('Failed to fetch image');
